@@ -1,16 +1,21 @@
-# This is a sample Python script.
+from decimal import Decimal
+from rdkit import Chem
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+DATA_PATH = '/home/artem/dataset_gdb17/GDB17.50000000.smi'
 
 
-# Press the green button in the gutter to run the script.
+def main():
+    print('I run main')
+
+    suppl = Chem.SmilesMolSupplier(DATA_PATH)
+    data_length = len(suppl)
+    print(f'length of the data set: {Decimal(data_length):.2E}')
+
+    for i in range(1000):
+        num_mols = suppl[i].GetNumAtoms()
+        print(f'num_mols: {num_mols}')
+
+    print('I am done')
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main()
