@@ -1,23 +1,26 @@
+import os.path
 from decimal import Decimal
-from rdkit import Chem
-from rdkit import RDLogger
 import numpy as np
+import pickle
+# plot
 import matplotlib.pyplot as plt
 import seaborn
-import pickle
+# chemistry
+from rdkit import Chem
+from rdkit import RDLogger
 
 DATA_FOLDER = '/home/artem/dataset_gdb17'
 DATA_FILE_NAME = 'GDB17.50000000.smi'
-DATA_PATH = DATA_FOLDER + '/' + DATA_FILE_NAME
-MOL_NUM_LIMIT = 1_000_000
+MOL_NUM_LIMIT = 1_000_000  # how many molecules from the data set
 # MOL_NUM_LIMIT = False  # if False, the whole data set
 
-RDLogger.DisableLog('rdApp.*')
+# warning
+RDLogger.DisableLog('rdApp.*')  # disable warning from rdkit
 
 
 def main(MOL_NUM_LIMIT=None):
     print('I run main')
-
+    DATA_PATH = DATA_FOLDER + '/' + DATA_FILE_NAME
     suppl = Chem.SmilesMolSupplier(DATA_PATH)
     data_length = len(suppl)
     print(f'length of the data set: {Decimal(data_length):.2E}')
@@ -52,9 +55,15 @@ def main(MOL_NUM_LIMIT=None):
         'occurences_number.pkl': occurences_number
     }
 
-    for save_keys in save_dict:
-        with open(DATA_FOLDER + '/' + save_keys, 'wb') as fid:
-            pickle.dump(save_dict[save_keys], fid)
+    for save_key in save_dict:
+        current_path = DATA_FOLDER + '/' + save_key
+        if not os.path.exists(current_path):
+            print(f'Saving {save_key} in {current_path}...')
+            with open(current_path, 'wb') as fid:
+                pickle.dump(save_dict[save_key], fid)
+            print(f'...Saved successfully')
+        else:
+            print(f'the path {current_path} exists. Will not save anything')
 
 
 if __name__ == '__main__':
