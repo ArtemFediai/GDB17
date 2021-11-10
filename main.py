@@ -8,14 +8,17 @@ import seaborn
 # chemistry
 from rdkit import Chem
 from rdkit import RDLogger
+# warnings
+RDLogger.DisableLog('rdApp.*')  # disable warning from rdkit
 
 DATA_FOLDER = '/home/artem/dataset_gdb17'
 DATA_FILE_NAME = 'GDB17.50000000.smi'
 MOL_NUM_LIMIT = 1_000_000  # how many molecules from the data set
 # MOL_NUM_LIMIT = False  # if False, the whole data set
+DO_NOT_SHUFFLE = True  # if True, does not permute molecules ids. Use if the whole dataset used
+FORCE_SAVE = True  # save even the files already exist
+# <-- use True by default if the whole dataset is used
 
-# warning
-RDLogger.DisableLog('rdApp.*')  # disable warning from rdkit
 
 
 def main(MOL_NUM_LIMIT=None):
@@ -31,8 +34,11 @@ def main(MOL_NUM_LIMIT=None):
         MOL_NUM_LIMIT = MOL_NUM_LIMIT
 
     # randomly permuted molecule numeration
-    permuted_numbers_int_64 = np.random.permutation(data_length).astype(int)  # 64bit does not work for rdkit
-    permuted_numbers = permuted_numbers_int_64.tolist()
+    if not DO_NOT_SHUFFLE:
+        permuted_numbers_int_64 = np.random.permutation(data_length).astype(int)  # 64bit does not work for rdkit
+        permuted_numbers = permuted_numbers_int_64.tolist()
+    else:
+        permuted_numbers = np.arange(data_length).tolist()
 
     # numbers_of_atoms = [10, 11, 12, 13, 14, 15, 16, 17]
 
@@ -50,7 +56,7 @@ def main(MOL_NUM_LIMIT=None):
 
     # save plot num occurences of X-atoms molecule
     current_path = DATA_FOLDER + '/' + 'atoms_count_list.png'
-    if not os.path.exists(DATA_FOLDER + '/' + 'atoms_count_list.png'):
+    if not os.path.exists(current_path) or FORCE_SAVE:
         print(f'Saving atoms_count_list into {current_path}...')
         fig.savefig(current_path)
         print('...Saved successfully')
@@ -67,7 +73,7 @@ def main(MOL_NUM_LIMIT=None):
 
     for save_key in save_dict:
         current_path = DATA_FOLDER + '/' + save_key
-        if not os.path.exists(current_path):
+        if not os.path.exists(current_path) or FORCE_SAVE:
             print(f'Saving {save_key} in {current_path}...')
             with open(current_path, 'wb') as fid:
                 pickle.dump(save_dict[save_key], fid)
