@@ -14,6 +14,7 @@ MOL_NUM_LIMIT = 1_000_000
 
 RDLogger.DisableLog('rdApp.*')
 
+
 def main(MOL_NUM_LIMIT=None):
     print('I run main')
 
