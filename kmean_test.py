@@ -40,7 +40,7 @@ host_name = uname().nodename
 if host_name == 'artem-pc':
     DATA_FOLDER = '/home/artem/dataset_gdb17'
 elif host_name == 'int-nano':
-    DATA_FOLDER = '/home/ws/bh5670/dataset_gdb17'
+    DATA_FOLDER = '/home/ws/bh5670/data_gdb17'
 else:
     print(f'I  do not know, where DATA_FOLDER is at {host_name}? exiting...')
     exit()
