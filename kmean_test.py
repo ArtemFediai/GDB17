@@ -26,7 +26,7 @@ from sklearn.metrics import pairwise_distances_argmin
 
 # In[48]:
 
-
+DATA_FOLDER = '/home/ws/bh5670/dataset_gdb17'
 DATA_FOLDER = '/home/artem/dataset_gdb17'
 SAMPLE_SIZE = 10000  #<-- data set size
 MOL_SIZE_OF_INTEREST = 16  # number of atoms
