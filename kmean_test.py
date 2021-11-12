@@ -2,16 +2,15 @@
 # coding: utf-8
 
 # # Example of Kmeans for SAMPLE_SIZE molecules and molecules with size MOL_SIZE_OF_INTEREST
-
+# use positional arguments
 # In[47]:
 
 
 import os.path
-from decimal import Decimal
 from rdkit import Chem
 from rdkit import RDLogger
 import numpy as np
-import random
+import sys
 import matplotlib.pyplot as plt
 import seaborn
 import pickle
@@ -21,22 +20,29 @@ RDLogger.DisableLog('rdApp.*')
 from sklearn.cluster import KMeans
 from sklearn.metrics import pairwise_distances_argmin
 
+# ## PARAMETERS
+MOL_SIZE_OF_INTEREST = 15  # number of atoms
+SAMPLE_SIZE = 10000  #<-- data set size
+
+# ## POSITIONAL ARGS
+if len(sys.argv) > 1:  # 0-th argv is a file name
+    MOL_SIZE_OF_INTEREST = sys.argv[1]  # 1-st arg
+    print(f'According to positional argument, MOL_SIZE_OF_INTEREST is {MOL_SIZE_OF_INTEREST}')
+if len(sys.argv) > 2:
+    SAMPLE_SIZE = sys.argv[2]
+    print(f'According to positional argument, SAMPLE SIZE is {SAMPLE_SIZE}')
 
 # ## SET CONSTANTS
-
 # In[48]:
 
 DATA_FOLDER = '/home/ws/bh5670/dataset_gdb17'
 DATA_FOLDER = '/home/artem/dataset_gdb17'
-SAMPLE_SIZE = 10000  #<-- data set size
-MOL_SIZE_OF_INTEREST = 16  # number of atoms
 #DATA_FILE_NAME = 'GDB17.50000000.smi'
 DATA_FILE_NAME = str(MOL_SIZE_OF_INTEREST) + '.smi'
 DATA_PATH =  DATA_FOLDER + '/' + str(SAMPLE_SIZE) + '/' + DATA_FILE_NAME
 
 _N_CLUSTERS = 100  # we want 100 mols. Not more, not fewer --> 'protected'
 METRICS = 'euclidean'
-
 
 # In[49]:
 
