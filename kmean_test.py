@@ -5,7 +5,7 @@
 # use positional arguments
 # In[47]:
 
-
+from os import uname
 import os.path
 from rdkit import Chem
 from rdkit import RDLogger
@@ -35,8 +35,17 @@ if len(sys.argv) > 2:
 # ## SET CONSTANTS
 # In[48]:
 
-DATA_FOLDER = '/home/ws/bh5670/dataset_gdb17'
-DATA_FOLDER = '/home/artem/dataset_gdb17'
+# add the folder where you store the data set -->
+host_name = uname().nodename
+if host_name == 'artem-pc':
+    DATA_FOLDER = '/home/artem/dataset_gdb17'
+elif host_name == 'int-nano':
+    DATA_FOLDER = '/home/ws/bh5670/dataset_gdb17'
+else:
+    print(f'I  do not know, where DATA_FOLDER is at {host_name}? exiting...')
+    exit()
+# < -- add the folder where you store the sata set
+
 #DATA_FILE_NAME = 'GDB17.50000000.smi'
 DATA_FILE_NAME = str(MOL_SIZE_OF_INTEREST) + '.smi'
 DATA_PATH =  DATA_FOLDER + '/' + str(SAMPLE_SIZE) + '/' + DATA_FILE_NAME
